@@ -15,10 +15,11 @@
     "require": {
         "php": ">=7.0",
         "ext-phalcon": "^3",
-        "vainyl/config": "0.1.x-dev",
-        "vainyl/core": "0.1.x-dev",
-        "vainyl/event": "0.1.x-dev",
-        "vainyl/http": "0.1.x-dev"
+        "vainyl/config": "dev-master",
+        "vainyl/core": "dev-master",
+        "vainyl/event": "dev-master",
+        "vainyl/http": "dev-master",
+        "vainyl/time": "dev-master"
     },
     "require-dev": {
         "phalcon/devtools": "^3"
