@@ -8,11 +8,15 @@
  * @license   https://opensource.org/licenses/MIT MIT License
  * @link      https://github.com/allflame/vain-http
  */
-namespace Vainyl\Phalcon\Http\Cookie\Factory;
+declare(strict_types=1);
 
-use Vain\Core\Http\Cookie\Factory\CookieFactoryInterface;
-use Vain\Core\Http\Cookie\VainCookieInterface;
-use Vainyl\Phalcon\Http\Cookie\PhalconCookie;
+namespace Vainyl\Phalcon\Http\Factory;
+
+use Vainyl\Http\CookieInterface;
+use Vainyl\Http\Factory\CookieFactoryInterface;
+use Vainyl\Phalcon\Http\PhalconCookie;
+use Vainyl\Time\Factory\TimeFactoryInterface;
+use Vainyl\Time\TimeInterface;
 
 /**
  * Class PhalconCookieFactory
@@ -21,19 +25,30 @@ use Vainyl\Phalcon\Http\Cookie\PhalconCookie;
  */
 class PhalconCookieFactory implements CookieFactoryInterface
 {
+    private $timeFactory;
+
+    /**
+     * PhalconCookieFactory constructor.
+     *
+     * @param TimeFactoryInterface $timeFactory
+     */
+    public function __construct(TimeFactoryInterface $timeFactory)
+    {
+        $this->timeFactory = $timeFactory;
+    }
+
     /**
      * @inheritDoc
      */
     public function createCookie(
         string $name,
         string $value,
-        \DateTimeInterface $expiryDate = null,
+        TimeInterface $expiryDate = null,
         string $path = '/',
         string $domain = null,
         bool $secure = false,
         bool $httpOnly = false
-    ) : VainCookieInterface
-    {
-        return new PhalconCookie($name, $value, $expiryDate, $path, $domain, $secure, $httpOnly);
+    ): CookieInterface {
+        return new PhalconCookie($this->timeFactory, $name, $value, $expiryDate, $path, $domain, $secure, $httpOnly);
     }
 }
