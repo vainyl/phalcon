@@ -8,15 +8,14 @@
  * @license   https://opensource.org/licenses/MIT MIT License
  * @link      https://github.com/allflame/vain-phalcon
  */
+declare(strict_types=1);
 
 namespace Vainyl\Phalcon\Database;
 
-use Phalcon\Db\Adapter\Pdo\Mysql as PhalconMysqlDatabase;
-use Vain\Core\Connection\ConnectionInterface;
-use Vain\Core\Database\Generator\Factory\DatabaseGeneratorFactoryInterface;
-use Vain\Core\Database\Generator\DatabaseGeneratorInterface;
-use Vain\Core\Database\Mvcc\MvccDatabaseInterface;
-use Vainyl\Phalcon\Database\Cursor\PhalconCursor;
+use Phalcon\Db\Adapter\Pdo\Mysql;
+use Vainyl\Connection\ConnectionInterface;
+use Vainyl\Database\CursorInterface;
+use Vainyl\Database\MvccDatabaseInterface;
 use Vainyl\Phalcon\Exception\PhalconQueryException;
 
 /**
@@ -24,21 +23,17 @@ use Vainyl\Phalcon\Exception\PhalconQueryException;
  *
  * @author Taras P. Girnyk <taras.p.gyrnik@gmail.com>
  */
-class PhalconMysqlAdapter extends PhalconMysqlDatabase implements MvccDatabaseInterface
+class PhalconMysqlAdapter extends Mysql implements MvccDatabaseInterface
 {
-    private $generatorFactory;
-
     private $connection;
 
     /**
      * PhalconPostgresqlAdapter constructor.
      *
-     * @param DatabaseGeneratorFactoryInterface $generatorFactory
-     * @param ConnectionInterface       $connection
+     * @param ConnectionInterface $connection
      */
-    public function __construct(DatabaseGeneratorFactoryInterface $generatorFactory, ConnectionInterface $connection)
+    public function __construct(ConnectionInterface $connection)
     {
-        $this->generatorFactory = $generatorFactory;
         $this->connection = $connection;
         parent::__construct([]);
     }
@@ -58,7 +53,7 @@ class PhalconMysqlAdapter extends PhalconMysqlDatabase implements MvccDatabaseIn
     /**
      * @inheritDoc
      */
-    public function startTransaction() : bool
+    public function startTransaction(): bool
     {
         return $this->begin();
     }
@@ -66,7 +61,7 @@ class PhalconMysqlAdapter extends PhalconMysqlDatabase implements MvccDatabaseIn
     /**
      * @inheritDoc
      */
-    public function commitTransaction() : bool
+    public function commitTransaction(): bool
     {
         return $this->commit();
     }
@@ -74,7 +69,7 @@ class PhalconMysqlAdapter extends PhalconMysqlDatabase implements MvccDatabaseIn
     /**
      * @inheritDoc
      */
-    public function rollbackTransaction() : bool
+    public function rollbackTransaction(): bool
     {
         return $this->rollback();
     }
@@ -82,12 +77,12 @@ class PhalconMysqlAdapter extends PhalconMysqlDatabase implements MvccDatabaseIn
     /**
      * @inheritDoc
      */
-    public function runQuery($query, array $bindParams, array $bindTypes = []) : DatabaseGeneratorInterface
+    public function runQuery($query, array $bindParams, array $bindTypes = []): CursorInterface
     {
         if (false === ($result = $this->query($query, $bindParams, $bindTypes))) {
-            throw new PhalconQueryException($this, $query);
+            throw new PhalconQueryException($this, $query, $bindParams);
         }
 
-        return $this->generatorFactory->create($this, new PhalconCursor($result));
+        return new PhalconCursor($result);
     }
 }

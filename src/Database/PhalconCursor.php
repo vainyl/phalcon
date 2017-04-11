@@ -8,27 +8,28 @@
  * @license   https://opensource.org/licenses/MIT MIT License
  * @link      https://github.com/allflame/vain-phalcon
  */
+declare(strict_types=1);
 
-namespace Vainyl\Phalcon\Database\Cursor;
+namespace Vainyl\Phalcon\Database;
 
-use Phalcon\Db\ResultInterface as PhalconDbResultInterface;
-use Vain\Core\Database\Cursor\DatabaseCursorInterface;
+use Phalcon\Db\ResultInterface;
+use Vainyl\Database\CursorInterface;
 
 /**
  * Class PhalconCursor
  *
  * @author Taras P. Girnyk <taras.p.gyrnik@gmail.com>
  */
-class PhalconCursor implements DatabaseCursorInterface
+class PhalconCursor implements CursorInterface
 {
     private $phalconDbResult;
 
     /**
      * PhalconCursor constructor.
      *
-     * @param PhalconDbResultInterface $phalconDbResult
+     * @param ResultInterface $phalconDbResult
      */
-    public function __construct(PhalconDbResultInterface $phalconDbResult)
+    public function __construct(ResultInterface $phalconDbResult)
     {
         $this->phalconDbResult = $phalconDbResult;
     }
@@ -36,7 +37,23 @@ class PhalconCursor implements DatabaseCursorInterface
     /**
      * @inheritDoc
      */
-    public function valid() : bool
+    public function key()
+    {
+        return 0;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function rewind()
+    {
+        $this->phalconDbResult->dataSeek(0);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function valid(): bool
     {
         return ($this->phalconDbResult->getInternalResult()->errorCode() === '00000');
     }
@@ -44,7 +61,7 @@ class PhalconCursor implements DatabaseCursorInterface
     /**
      * @inheritDoc
      */
-    public function current() : array
+    public function current(): array
     {
         return $this->phalconDbResult->fetch();
     }
@@ -52,7 +69,7 @@ class PhalconCursor implements DatabaseCursorInterface
     /**
      * @inheritDoc
      */
-    public function next() : bool
+    public function next(): bool
     {
         return $this->phalconDbResult->getInternalResult()->nextRowset();
     }
@@ -60,7 +77,7 @@ class PhalconCursor implements DatabaseCursorInterface
     /**
      * @inheritDoc
      */
-    public function close() : DatabaseCursorInterface
+    public function close(): CursorInterface
     {
         $this->phalconDbResult->getInternalResult()->closeCursor();
 
@@ -70,7 +87,7 @@ class PhalconCursor implements DatabaseCursorInterface
     /**
      * @inheritDoc
      */
-    public function mode(int $mode) : DatabaseCursorInterface
+    public function mode(int $mode): CursorInterface
     {
         $this->phalconDbResult->setFetchMode($mode);
 
@@ -80,7 +97,7 @@ class PhalconCursor implements DatabaseCursorInterface
     /**
      * @inheritDoc
      */
-    public function getSingle() : array
+    public function getSingle(): array
     {
         return $this->phalconDbResult->fetch();
     }
@@ -88,7 +105,7 @@ class PhalconCursor implements DatabaseCursorInterface
     /**
      * @inheritDoc
      */
-    public function getAll() : array
+    public function getAll(): array
     {
         return $this->phalconDbResult->fetchAll();
     }
@@ -96,7 +113,7 @@ class PhalconCursor implements DatabaseCursorInterface
     /**
      * @inheritDoc
      */
-    public function count() : int
+    public function count(): int
     {
         return $this->phalconDbResult->numRows();
     }

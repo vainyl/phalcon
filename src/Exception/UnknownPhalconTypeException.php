@@ -8,28 +8,50 @@
  * @license   https://opensource.org/licenses/MIT MIT License
  * @link      https://github.com/allflame/vain-phalcon
  */
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Vainyl\Phalcon\Exception;
 
-use Vain\Core\Exception\DatabaseFactoryException;
-use Vain\Core\Database\Factory\DatabaseFactoryInterface;
+use Vainyl\Core\Exception\AbstractCoreException;
+use Vainyl\Phalcon\Database\Factory\PhalconDatabaseFactory;
 
 /**
  * Class UnknownPhalconDriverException
  *
  * @author Taras P. Girnyk <taras.p.gyrnik@gmail.com>
  */
-class UnknownPhalconTypeException extends DatabaseFactoryException
+class UnknownPhalconTypeException extends AbstractCoreException
 {
+    private $databaseFactory;
+
+    private $driver;
+
     /**
      * UnknownPhalconDriverException constructor.
      *
-     * @param DatabaseFactoryInterface $databaseFactory
-     * @param string                   $driver
+     * @param PhalconDatabaseFactory $databaseFactory
+     * @param string                 $driver
      */
-    public function __construct(DatabaseFactoryInterface $databaseFactory, string $driver)
+    public function __construct(PhalconDatabaseFactory $databaseFactory, string $driver)
     {
-        parent::__construct($databaseFactory, sprintf('Cannot create phalcon database of unknown type %s', $driver));
+        $this->databaseFactory = $databaseFactory;
+        $this->driver = $driver;
+        parent::__construct(sprintf('Cannot create phalcon database of unknown type %s', $driver));
+    }
+
+    /**
+     * @return PhalconDatabaseFactory
+     */
+    public function getDatabaseFactory()
+    {
+        return $this->databaseFactory;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function toArray(): array
+    {
+        return array_merge(['driver' => $this->driver], parent::toArray());
     }
 }

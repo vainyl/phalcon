@@ -8,12 +8,11 @@
  * @license   https://opensource.org/licenses/MIT MIT License
  * @link      https://github.com/allflame/vain-phalcon
  */
+declare(strict_types=1);
 
 namespace Vainyl\Phalcon\Database\Factory;
 
-use Vain\Core\Connection\ConnectionInterface;
-use Vain\Core\Database\Factory\AbstractDatabaseFactory;
-use Vain\Core\Database\Generator\Factory\DatabaseGeneratorFactoryInterface;
+use Phalcon\Db\Adapter\Pdo;
 use Vainyl\Phalcon\Database\PhalconMysqlAdapter;
 use Vainyl\Phalcon\Database\PhalconPostgresqlAdapter;
 use Vainyl\Phalcon\Exception\UnknownPhalconTypeException;
@@ -23,34 +22,35 @@ use Vainyl\Phalcon\Exception\UnknownPhalconTypeException;
  *
  * @author Taras P. Girnyk <taras.p.gyrnik@gmail.com>
  */
-class PhalconDatabaseFactory extends AbstractDatabaseFactory
+class PhalconDatabaseFactory
 {
-    private $generatorFactory;
+    private $connectionStorage;
 
     /**
-     * PhalconDatabaseFactory constructor.
+     * PdoDatabaseFactory constructor.
      *
-     * @param string                    $name
-     * @param DatabaseGeneratorFactoryInterface $generatorFactory
+     * @param \ArrayAccess $connectionStorage
      */
-    public function __construct($name, DatabaseGeneratorFactoryInterface $generatorFactory)
+    public function __construct(\ArrayAccess $connectionStorage)
     {
-        $this->generatorFactory = $generatorFactory;
-        parent::__construct($name);
+        $this->connectionStorage = $connectionStorage;
     }
 
     /**
-     * @inheritDoc
+     * @param string $name
+     * @param array  $configData
+     *
+     * @return Pdo
      */
-    public function createDatabase(array $configData, ConnectionInterface $connection)
+    public function createDatabase(string $name, array $configData): Pdo
     {
         $type = $configData['type'];
         switch ($type) {
             case 'pgsql':
-                return new PhalconPostgresqlAdapter($this->generatorFactory, $connection);
+                return new PhalconPostgresqlAdapter($this->connectionStorage->offsetGet($configData['connection']));
                 break;
             case 'mysql':
-                return new PhalconMysqlAdapter($this->generatorFactory, $connection);
+                return new PhalconMysqlAdapter($this->connectionStorage->offsetGet($configData['connection']));
                 break;
             default:
                 throw new UnknownPhalconTypeException($this, $type);
