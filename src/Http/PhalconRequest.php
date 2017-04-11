@@ -8,69 +8,75 @@
  * @license   https://opensource.org/licenses/MIT MIT License
  * @link      https://github.com/allflame/vain-http
  */
-namespace Vainyl\Phalcon\Http\Request;
+declare(strict_types=1);
 
-use Phalcon\FilterInterface as PhalconFilterInterface;
-use Vain\Core\Http\Cookie\Storage\CookieStorageInterface;
-use Vain\Core\Http\File\VainFileInterface;
-use Vain\Core\Http\Header\Storage\HeaderStorageInterface;
-use Vain\Core\Http\Request\AbstractServerRequest;
-use Vain\Core\Http\Stream\VainStreamInterface;
-use Phalcon\Http\RequestInterface as PhalconHttpRequestInterface;
-use Vain\Core\Http\Uri\VainUriInterface;
+namespace Vainyl\Phalcon\Http;
+
+use Phalcon\FilterInterface;
+use Phalcon\Http\RequestInterface;
+use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\UriInterface;
+use Vainyl\Http\Factory\CookieFactoryInterface;
+use Vainyl\Http\Factory\HeaderFactoryInterface;
+use Vainyl\Http\ServerRequest;
 
 /**
  * Class PhalconRequest
  *
  * @author Taras P. Girnyk <taras.p.gyrnik@gmail.com>
  */
-class PhalconRequest extends AbstractServerRequest implements PhalconHttpRequestInterface
+class PhalconRequest extends ServerRequest implements RequestInterface
 {
     private $filter;
 
     /**
-     * PhalconRequest constructor.
+     * ServerRequest constructor.
      *
-     * @param PhalconFilterInterface $filter
+     * @param HeaderFactoryInterface $headerFactory
+     * @param \ArrayAccess           $headerStorage
+     * @param string                 $method
+     * @param UriInterface           $uri
+     * @param StreamInterface        $stream
+     * @param \ArrayAccess           $cookieStorage
+     * @param \ArrayAccess           $fileStorage
+     * @param CookieFactoryInterface $cookieFactory
      * @param array                  $serverParams
-     * @param array                  $uploadedFiles
      * @param array                  $queryParams
      * @param array                  $attributes
-     * @param string                 $parsedBody
+     * @param array                  $parsedBody
      * @param string                 $protocol
-     * @param VainUriInterface       $method
-     * @param VainUriInterface       $uri
-     * @param VainStreamInterface    $stream
-     * @param CookieStorageInterface $cookieStorage
-     * @param HeaderStorageInterface $headerStorage
      */
     public function __construct(
-        PhalconFilterInterface $filter,
+        FilterInterface $filter,
+        HeaderFactoryInterface $headerFactory,
+        \ArrayAccess $headerStorage,
+        string $method,
+        UriInterface $uri,
+        StreamInterface $stream,
+        \ArrayAccess $cookieStorage,
+        \ArrayAccess $fileStorage,
+        CookieFactoryInterface $cookieFactory,
         array $serverParams,
-        $uploadedFiles,
         array $queryParams,
         array $attributes,
-        $parsedBody,
-        $protocol,
-        $method,
-        VainUriInterface $uri,
-        VainStreamInterface $stream,
-        CookieStorageInterface $cookieStorage,
-        HeaderStorageInterface $headerStorage
+        array $parsedBody,
+        string $protocol
     ) {
         $this->filter = $filter;
         parent::__construct(
-            $serverParams,
-            $uploadedFiles,
-            $queryParams,
-            $attributes,
-            $parsedBody,
-            $protocol,
+            $headerFactory,
+            $headerStorage,
             $method,
             $uri,
             $stream,
             $cookieStorage,
-            $headerStorage
+            $fileStorage,
+            $cookieFactory,
+            $serverParams,
+            $queryParams,
+            $attributes,
+            $parsedBody,
+            $protocol
         );
     }
 
@@ -123,6 +129,62 @@ class PhalconRequest extends AbstractServerRequest implements PhalconHttpRequest
     public function getQuery($name = null, $filters = null, $defaultValue = null)
     {
         return $this->getRequestValue($this->getQueryParams(), $name, $filters, $defaultValue);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasQueryParam(string $name): bool
+    {
+        return array_key_exists($name, $this->getQueryParams());
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasBodyParam(string $name): bool
+    {
+        return array_key_exists($name, $this->getParsedBody());
+    }
+
+    /**
+     * @return string
+     */
+    public function getContentType(): string
+    {
+        if (false === $this->hasHeader(self::HEADER_CONTENT_TYPE)) {
+            return '';
+        }
+
+        return $this->getHeaderLine(self::HEADER_CONTENT_TYPE);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasServer($name)
+    {
+        return array_key_exists($name, $this->getServerParams());
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return string
+     */
+    public function getServer($name, $default = ''): string
+    {
+        if (false === array_key_exists($name, $this->getServerParams())) {
+            return $default;
+        }
+
+        return $this->getServerParams()[$name];
     }
 
     /**
@@ -250,7 +312,7 @@ class PhalconRequest extends AbstractServerRequest implements PhalconHttpRequest
      */
     public function getAcceptableContent()
     {
-        if (false === $this->getHeaderStorage()->hasHeader('HTTP_ACCEPT')) {
+        if (false === $this->hasHeader('HTTP_ACCEPT')) {
             return [];
         }
 
@@ -272,7 +334,7 @@ class PhalconRequest extends AbstractServerRequest implements PhalconHttpRequest
      */
     public function getClientCharsets()
     {
-        if (false === $this->getHeaderStorage()->hasHeader('HTTP_ACCEPT_CHARSET')) {
+        if (false === $this->hasHeader('HTTP_ACCEPT_CHARSET')) {
             return [];
         }
 
@@ -294,7 +356,7 @@ class PhalconRequest extends AbstractServerRequest implements PhalconHttpRequest
      */
     public function getLanguages()
     {
-        if (false === $this->getHeaderStorage()->hasHeader('HTTP_ACCEPT_LANGUAGE')) {
+        if (false === $this->hasHeader('HTTP_ACCEPT_LANGUAGE')) {
             return [];
         }
 
@@ -316,19 +378,15 @@ class PhalconRequest extends AbstractServerRequest implements PhalconHttpRequest
      */
     public function getBasicAuth()
     {
-        if (null === ($user = $this->getUri()->getUser()) || null === ($password = $this->getUri()->getPassword())) {
-            return null;
-        }
-
-        return ['username' => $user, 'password' => $password];
+        return ['username' => $this->getServer('PHP_AUTH_USER'), 'password' => $this->getServer('PHP_AUTH_PASSWORD')];
     }
 
     /**
      * @param bool $onlySuccessful
      *
-     * @return VainFileInterface[]
+     * @return \ArrayAccess
      */
-    public function getUploadedFiles($onlySuccessful = null) : array
+    public function getUploadedFiles($onlySuccessful = null): \ArrayAccess
     {
         return parent::getUploadedFiles();
     }
@@ -346,6 +404,126 @@ class PhalconRequest extends AbstractServerRequest implements PhalconHttpRequest
      */
     public function getPort()
     {
-        return $this->getHttpPort();
+        return $this->getUri()->getPort();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getScheme()
+    {
+        return $this->getUri()->getScheme();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isSecureRequest()
+    {
+        return 'https' === $this->getScheme();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getServerAddress()
+    {
+        return $this->getServer('SERVER_ADDR');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getServerName()
+    {
+        return $this->getServer('SERVER_NAME');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getHttpHost()
+    {
+        return $this->getServer('HTTP_HOST');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getUserAgent()
+    {
+        return $this->getServer('USER_AGENT');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isPost()
+    {
+        return 'post' === $this->getMethod();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isGet()
+    {
+        return 'get' === $this->getMethod();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isPut()
+    {
+        return 'put' === $this->getMethod();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isHead()
+    {
+        return 'head' === $this->getMethod();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isDelete()
+    {
+        return 'delete' === $this->getMethod();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isOptions()
+    {
+        return 'options' === $this->getMethod();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isPurge()
+    {
+        return 'purge' === $this->getMethod();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isTrace()
+    {
+        return 'trace' === $this->getMethod();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isConnect()
+    {
+        return 'connect' === $this->getMethod();
     }
 }

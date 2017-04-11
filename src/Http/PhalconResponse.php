@@ -8,19 +8,20 @@
  * @license   https://opensource.org/licenses/MIT MIT License
  * @link      https://github.com/allflame/vain-http
  */
-namespace Vainyl\Phalcon\Http\Response;
 
-use Vain\Core\Http\Response\AbstractResponse;
+namespace Vainyl\Phalcon\Http;
+
+use Phalcon\Http\ResponseInterface;
+use Vainyl\Http\Response;
 use Vainyl\Phalcon\Exception\BadRedirectCodeException;
-use Vainyl\Phalcon\Exception\JsonErrorException;
-use Phalcon\Http\ResponseInterface as PhalconHttpResponseInterface;
+use Vainyl\Phalcon\Exception\UnsupportedResponseCallException;
 
 /**
  * Class PhalconResponse
  *
  * @author Taras P. Girnyk <taras.p.gyrnik@gmail.com>
  */
-class PhalconResponse extends AbstractResponse implements PhalconHttpResponseInterface
+class PhalconResponse extends Response implements ResponseInterface
 {
     /**
      * @inheritDoc
@@ -35,9 +36,7 @@ class PhalconResponse extends AbstractResponse implements PhalconHttpResponseInt
      */
     public function setHeader($name, $value)
     {
-        $this->getHeaderStorage()->createHeader($name, $value);
-
-        return $this;
+        return $this->withHeader($name, $value);
     }
 
     /**
@@ -46,9 +45,8 @@ class PhalconResponse extends AbstractResponse implements PhalconHttpResponseInt
     public function setRawHeader($header)
     {
         list ($headerName, $headerValue) = explode(':', $header);
-        $this->getHeaderStorage()->createHeader($headerName, $headerValue);
 
-        return $this;
+        return $this->withHeader($headerName, $headerValue);
     }
 
     /**
@@ -66,9 +64,8 @@ class PhalconResponse extends AbstractResponse implements PhalconHttpResponseInt
     {
         $cloned = clone $datetime;
         $cloned->setTimezone(new \DateTimeZone("UTC"));
-        $this->getHeaderStorage()->createHeader(self::HEADER_EXPIRES, $datetime->format("D, d M Y H:i:s") . " GMT");
 
-        return $this;
+        return $this->withHeader(self::HEADER_EXPIRES, $datetime->format("D, d M Y H:i:s") . " GMT");
     }
 
     /**
@@ -85,12 +82,9 @@ class PhalconResponse extends AbstractResponse implements PhalconHttpResponseInt
     public function setContentType($contentType, $charset = null)
     {
         if (null === $charset) {
-            $this->getHeaderStorage()->createHeader(self::HEADER_CONTENT_TYPE, $contentType);
+            $this->withHeader(self::HEADER_CONTENT_TYPE, $contentType);
         } else {
-            $this->getHeaderStorage()->createHeader(
-                self::HEADER_CONTENT_TYPE,
-                sprintf('%s";charset=%s"', $contentType, $charset)
-            );
+            $this->withHeader(self::HEADER_CONTENT_TYPE, sprintf('%s";charset=%s"', $contentType, $charset));
         }
 
         return $this;
@@ -125,11 +119,7 @@ class PhalconResponse extends AbstractResponse implements PhalconHttpResponseInt
      */
     public function setJsonContent($content)
     {
-        if (false === ($encoded = json_encode($content))) {
-            throw new JsonErrorException($this, $content);
-        }
-
-        return $this->setContent($encoded);
+        throw new UnsupportedResponseCallException($this, __METHOD__);
     }
 
     /**
@@ -156,7 +146,6 @@ class PhalconResponse extends AbstractResponse implements PhalconHttpResponseInt
     public function sendHeaders()
     {
         return $this;
-        //throw new UnsupportedResponseCallException($this, __METHOD__);
     }
 
     /**
@@ -165,7 +154,6 @@ class PhalconResponse extends AbstractResponse implements PhalconHttpResponseInt
     public function sendCookies()
     {
         return $this;
-        //throw new UnsupportedResponseCallException($this, __METHOD__);
     }
 
     /**
@@ -182,7 +170,9 @@ class PhalconResponse extends AbstractResponse implements PhalconHttpResponseInt
     public function resetHeaders()
     {
         $copy = clone $this;
-        $copy->getHeaderStorage()->resetHeaders();
+        foreach ($this->getHeaderStorage() as $name => $header) {
+            $copy = $copy->withoutHeader($name);
+        }
 
         return $copy;
     }
@@ -192,7 +182,7 @@ class PhalconResponse extends AbstractResponse implements PhalconHttpResponseInt
      */
     public function setFileToSend($filePath, $attachmentName = null)
     {
-        $this->getHeaderStorage()->resetHeaders();
+        $response = $this->resetHeaders();
 
         $basePath = $attachmentName;
 
@@ -200,12 +190,12 @@ class PhalconResponse extends AbstractResponse implements PhalconHttpResponseInt
             $basePath = basename($attachmentName);
         }
 
-        $this->getBody()->write(readfile($filePath));
-
-        return $this
-            ->setHeader(self::HEADER_CONTENT_DESCRIPTION, 'File Transfer')
-            ->setHeader(self::HEADER_CONTENT_TYPE, 'application/octet-stream')
-            ->setHeader(self::HEADER_CONTENT_DISPOSITION, sprintf('attachment; filename=%s', $basePath))
-            ->setHeader(self::HEADER_CONTENT_TRANSFER_ENCODING, 'binary');
+        return $response
+            ->withHeader(self::HEADER_CONTENT_DESCRIPTION, 'File Transfer')
+            ->withHeader(self::HEADER_CONTENT_TYPE, 'application/octet-stream')
+            ->withHeader(self::HEADER_CONTENT_DISPOSITION, sprintf('attachment; filename=%s', $basePath))
+            ->withHeader(self::HEADER_CONTENT_TRANSFER_ENCODING, 'binary')
+            ->getBody()
+            ->write(readfile($filePath));
     }
 }

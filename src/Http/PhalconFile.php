@@ -8,17 +8,19 @@
  * @license   https://opensource.org/licenses/MIT MIT License
  * @link      https://github.com/allflame/vain-http
  */
-namespace Vainyl\Phalcon\Http\File;
+declare(strict_types=1);
 
-use Phalcon\Http\Request\FileInterface as PhalconFileInterface;
-use Vain\Core\Http\File\AbstractFile;
+namespace Vainyl\Phalcon\Http;
+
+use Phalcon\Http\Request\FileInterface;
+use Vainyl\Http\UploadedFile;
 
 /**
  * Class PhalconFile
  *
  * @author Taras P. Girnyk <taras.p.gyrnik@gmail.com>
  */
-class PhalconFile extends AbstractFile implements PhalconFileInterface
+class PhalconFile extends UploadedFile implements FileInterface
 {
     /**
      * @inheritDoc
