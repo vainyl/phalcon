@@ -8,21 +8,18 @@
  * @license   https://opensource.org/licenses/MIT MIT License
  * @link      https://github.com/allflame/vain-http
  */
-namespace Vainyl\Phalcon\Http\Request\Proxy;
 
-use Vain\Core\Http\Request\Proxy\AbstractRequestProxy;
-use Vain\Core\Http\Request\Proxy\HttpRequestProxyInterface;
-use Phalcon\Http\RequestInterface as PhalconHttpRequestInterface;
-use Vainyl\Phalcon\Http\Request\PhalconRequest;
+namespace Vainyl\Phalcon\Http\Proxy;
+
+use Phalcon\Http\RequestInterface;
+use Vainyl\Http\Proxy\RequestStack;
 
 /**
- * Class PhalconRequestProxy
+ * Class PhalconRequestStack
  *
  * @author Taras P. Girnyk <taras.p.gyrnik@gmail.com>
- *
- * @method PhalconRequest getCurrentMessage
  */
-class PhalconRequestProxy extends AbstractRequestProxy implements HttpRequestProxyInterface, PhalconHttpRequestInterface
+class PhalconRequestStack extends RequestStack implements RequestInterface
 {
     /**
      * @inheritDoc
@@ -222,5 +219,141 @@ class PhalconRequestProxy extends AbstractRequestProxy implements HttpRequestPro
     public function getPort()
     {
         return $this->getCurrentMessage()->getPort();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getServer($name)
+    {
+        return $this->getCurrentMessage()->getServer($name);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function hasServer($name)
+    {
+        return $this->getCurrentMessage()->hasServer($name);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getScheme()
+    {
+        return $this->getCurrentMessage()->getScheme();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isSecureRequest()
+    {
+        return $this->getCurrentMessage()->isSecureRequest();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getServerAddress()
+    {
+        return $this->getCurrentMessage()->getServerAddress();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getServerName()
+    {
+        return $this->getCurrentMessage()->getServerName();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getHttpHost()
+    {
+        return $this->getCurrentMessage()->getHttpHost();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getUserAgent()
+    {
+        return $this->getCurrentMessage()->getUserAgent();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isPost()
+    {
+        return $this->getCurrentMessage()->isPost();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isGet()
+    {
+        return $this->getCurrentMessage()->isGet();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isPut()
+    {
+        return $this->getCurrentMessage()->isPut();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isHead()
+    {
+        return $this->getCurrentMessage()->isHead();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isDelete()
+    {
+        return $this->getCurrentMessage()->isDelete();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isOptions()
+    {
+        return $this->getCurrentMessage()->isOptions();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isPurge()
+    {
+        return $this->getCurrentMessage()->isPurge();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isTrace()
+    {
+        return $this->getCurrentMessage()->isTrace();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isConnect()
+    {
+        return $this->getCurrentMessage()->isConnect();
     }
 }

@@ -8,24 +8,18 @@
  * @license   https://opensource.org/licenses/MIT MIT License
  * @link      https://github.com/allflame/vain-http
  */
-namespace Vainyl\Phalcon\Http\Response\Proxy;
 
-use Vain\Core\Http\Response\Proxy\AbstractResponseProxy;
-use Vain\Core\Http\Response\Proxy\HttpResponseProxyInterface;
-use Phalcon\Http\ResponseInterface as PhalconHttpResponseInterface;
-use Vainyl\Phalcon\Http\Response\PhalconResponse;
+namespace Vainyl\Phalcon\Http\Proxy;
+
+use Phalcon\Http\ResponseInterface;
+use Vainyl\Http\Proxy\ResponseStack;
 
 /**
- * Class PhalconResponseProxy
+ * Class PhalconResponseStack
  *
  * @author Taras P. Girnyk <taras.p.gyrnik@gmail.com>
- *
- * @method PhalconResponse getCurrentMessage
- * @method PhalconResponse popResponse
  */
-class PhalconResponseProxy extends AbstractResponseProxy implements
-    HttpResponseProxyInterface,
-    PhalconHttpResponseInterface
+class PhalconResponseStack extends ResponseStack implements ResponseInterface
 {
     /**
      * @inheritDoc
