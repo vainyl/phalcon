@@ -17,6 +17,7 @@
         "ext-phalcon": "^3",
         "vainyl/config": "dev-master",
         "vainyl/core": "dev-master",
+        "vainyl/database": "dev-master",
         "vainyl/event": "dev-master",
         "vainyl/http": "dev-master",
         "vainyl/time": "dev-master"
