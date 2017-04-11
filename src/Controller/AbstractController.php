@@ -25,7 +25,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * @property ResponseInterface response
  * @property \ArrayAccess cookies
  */
-class AbstractController extends Controller implements ControllerInterface
+abstract class AbstractController extends Controller implements ControllerInterface
 {
     /**
      * @inheritDoc
