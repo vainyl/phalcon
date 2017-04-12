@@ -13,8 +13,7 @@ declare(strict_types=1);
 namespace Vainyl\Phalcon\Http\Factory;
 
 use Psr\Http\Message\UploadedFileInterface;
-use Vainyl\Http\Factory\FileFactoryInterface;
-use Vainyl\Http\ResourceStream;
+use Vainyl\Http\Decorator\AbstractFileFactoryDecorator;
 use Vainyl\Phalcon\Http\PhalconFile;
 
 /**
@@ -22,7 +21,7 @@ use Vainyl\Phalcon\Http\PhalconFile;
  *
  * @author Taras P. Girnyk <taras.p.gyrnik@gmail.com>
  */
-class PhalconFileFactory implements FileFactoryInterface
+class PhalconFileFactory extends AbstractFileFactoryDecorator
 {
     /**
      * @inheritDoc
@@ -34,6 +33,6 @@ class PhalconFileFactory implements FileFactoryInterface
         string $fileName,
         string $mediaType
     ): UploadedFileInterface {
-        return new PhalconFile(new ResourceStream(fopen($source, 'r+')), $size, $error, $fileName, $mediaType);
+        return new PhalconFile(parent::createFile($source, $size, $error, $fileName, $mediaType));
     }
 }
