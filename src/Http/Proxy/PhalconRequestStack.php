@@ -26,6 +26,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function getPost($name = null, $filters = null, $defaultValue = null)
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->getPost($name, $filters, $defaultValue);
     }
 
@@ -34,6 +35,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function getQuery($name = null, $filters = null, $defaultValue = null)
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->getQuery($name, $filters, $defaultValue);
     }
 
@@ -42,6 +44,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function has($name)
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->has($name);
     }
 
@@ -50,6 +53,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function hasPost($name)
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->hasPost($name);
     }
 
@@ -58,6 +62,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function hasPut($name)
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->hasPut($name);
     }
 
@@ -66,6 +71,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function hasQuery($name)
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->hasQuery($name);
     }
 
@@ -74,6 +80,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function isAjax()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->isAjax();
     }
 
@@ -82,6 +89,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function isSoapRequested()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->isSoapRequested();
     }
 
@@ -90,6 +98,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function getRawBody()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->getRawBody();
     }
 
@@ -98,6 +107,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function getJsonRawBody($mode)
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->getJsonRawBody($mode);
     }
 
@@ -106,6 +116,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function getClientAddress($trustForwardedHeader = false)
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->getClientAddress($trustForwardedHeader);
     }
 
@@ -114,6 +125,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function isMethod($methods, $strict = false)
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->isMethod($methods, $strict);
     }
 
@@ -122,6 +134,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function hasFiles($onlySuccessful = false)
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->hasFiles($onlySuccessful);
     }
 
@@ -130,6 +143,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function getHTTPReferer()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->getHTTPReferer();
     }
 
@@ -138,6 +152,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function getAcceptableContent()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->getAcceptableContent();
     }
 
@@ -146,6 +161,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function getBestAccept()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->getBestAccept();
     }
 
@@ -154,6 +170,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function getClientCharsets()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->getClientCharsets();
     }
 
@@ -162,6 +179,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function getBestCharset()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->getBestCharset();
     }
 
@@ -170,6 +188,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function getLanguages()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->getLanguages();
     }
 
@@ -178,6 +197,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function getBestLanguage()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->getBestLanguage();
     }
 
@@ -186,6 +206,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function getBasicAuth()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->getBasicAuth();
     }
 
@@ -194,6 +215,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function getDigestAuth()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->getDigestAuth();
     }
 
@@ -202,6 +224,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function get($name = null, $filters = null, $default = null)
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->get($name, $filters, $default);
     }
 
@@ -218,6 +241,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function getPort()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->getPort();
     }
 
@@ -226,6 +250,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function getServer($name)
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->getServer($name);
     }
 
@@ -234,6 +259,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function hasServer($name)
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->hasServer($name);
     }
 
@@ -242,6 +268,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function getScheme()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->getScheme();
     }
 
@@ -250,6 +277,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function isSecureRequest()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->isSecureRequest();
     }
 
@@ -258,6 +286,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function getServerAddress()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->getServerAddress();
     }
 
@@ -266,6 +295,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function getServerName()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->getServerName();
     }
 
@@ -274,6 +304,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function getHttpHost()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->getHttpHost();
     }
 
@@ -282,6 +313,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function getUserAgent()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->getUserAgent();
     }
 
@@ -290,6 +322,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function isPost()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->isPost();
     }
 
@@ -298,6 +331,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function isGet()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->isGet();
     }
 
@@ -306,6 +340,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function isPut()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->isPut();
     }
 
@@ -314,6 +349,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function isHead()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->isHead();
     }
 
@@ -322,6 +358,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function isDelete()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->isDelete();
     }
 
@@ -330,6 +367,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function isOptions()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->isOptions();
     }
 
@@ -338,6 +376,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function isPurge()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->isPurge();
     }
 
@@ -346,6 +385,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function isTrace()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->isTrace();
     }
 
@@ -354,6 +394,7 @@ class PhalconRequestStack extends RequestStack implements RequestInterface
      */
     public function isConnect()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return $this->getCurrentMessage()->isConnect();
     }
 }

@@ -10,7 +10,7 @@
  */
 namespace Vainyl\Phalcon\Extension;
 
-use Vain\Core\Extension\AbstractExtension;
+use Vainyl\Core\Extension\AbstractExtension;
 
 /**
  * Class PhalconExtension

@@ -134,6 +134,7 @@ class PhalconRequest extends AbstractServerRequestDecorator implements RequestIn
 
     /**
      * @param string $name
+     * @param mixed  $default
      *
      * @return string
      */
