@@ -12,45 +12,33 @@ declare(strict_types=1);
 
 namespace Vainyl\Phalcon\Http;
 
-use Phalcon\Http\CookieInterface;
-use Vainyl\Http\Cookie;
+use Phalcon\Http\CookieInterface as PhalconCookieInterface;
+use Vainyl\Http\CookieInterface;
+use Vainyl\Http\Decorator\AbstractCookieDecorator;
 use Vainyl\Phalcon\Exception\UnsupportedCookieCallException;
 use Vainyl\Time\Factory\TimeFactoryInterface;
-use Vainyl\Time\TimeInterface;
 
 /**
  * Class PhalconCookie
  *
  * @author Taras P. Girnyk <taras.p.gyrnik@gmail.com>
  */
-class PhalconCookie extends Cookie implements CookieInterface
+class PhalconCookie extends AbstractCookieDecorator implements PhalconCookieInterface
 {
     private $timeFactory;
 
     /**
      * PhalconCookie constructor.
      *
+     * @param CookieInterface      $cookie
      * @param TimeFactoryInterface $timeFactory
-     * @param string               $name
-     * @param string               $value
-     * @param TimeInterface|null   $expiryDate
-     * @param string               $path
-     * @param null                 $domain
-     * @param bool                 $secure
-     * @param bool                 $httpOnly
      */
     public function __construct(
-        TimeFactoryInterface $timeFactory,
-        $name,
-        $value,
-        TimeInterface $expiryDate = null,
-        $path = '/',
-        $domain = null,
-        $secure = false,
-        $httpOnly = false
+        CookieInterface $cookie,
+        TimeFactoryInterface $timeFactory
     ) {
         $this->timeFactory = $timeFactory;
-        parent::__construct($name, $value, $expiryDate, $path, $domain, $secure, $httpOnly);
+        parent::__construct($cookie);
     }
 
     /**

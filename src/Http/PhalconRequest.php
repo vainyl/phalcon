@@ -14,10 +14,8 @@ namespace Vainyl\Phalcon\Http;
 
 use Phalcon\FilterInterface;
 use Phalcon\Http\RequestInterface;
-use Psr\Http\Message\StreamInterface;
-use Psr\Http\Message\UriInterface;
-use Vainyl\Http\Factory\CookieFactoryInterface;
-use Vainyl\Http\Factory\HeaderFactoryInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Vainyl\Http\Decorator\AbstractServerRequestDecorator;
 use Vainyl\Http\ServerRequest;
 
 /**
@@ -25,59 +23,20 @@ use Vainyl\Http\ServerRequest;
  *
  * @author Taras P. Girnyk <taras.p.gyrnik@gmail.com>
  */
-class PhalconRequest extends ServerRequest implements RequestInterface
+class PhalconRequest extends AbstractServerRequestDecorator implements RequestInterface
 {
     private $filter;
 
     /**
-     * ServerRequest constructor.
+     * PhalconRequest constructor.
      *
-     * @param HeaderFactoryInterface $headerFactory
-     * @param \ArrayAccess           $headerStorage
-     * @param string                 $method
-     * @param UriInterface           $uri
-     * @param StreamInterface        $stream
-     * @param \ArrayAccess           $cookieStorage
-     * @param \ArrayAccess           $fileStorage
-     * @param CookieFactoryInterface $cookieFactory
-     * @param array                  $serverParams
-     * @param array                  $queryParams
-     * @param array                  $attributes
-     * @param array                  $parsedBody
-     * @param string                 $protocol
+     * @param FilterInterface        $filter
+     * @param ServerRequestInterface $request
      */
-    public function __construct(
-        FilterInterface $filter,
-        HeaderFactoryInterface $headerFactory,
-        \ArrayAccess $headerStorage,
-        string $method,
-        UriInterface $uri,
-        StreamInterface $stream,
-        \ArrayAccess $cookieStorage,
-        \ArrayAccess $fileStorage,
-        CookieFactoryInterface $cookieFactory,
-        array $serverParams,
-        array $queryParams,
-        array $attributes,
-        array $parsedBody,
-        string $protocol
-    ) {
+    public function __construct(FilterInterface $filter, ServerRequestInterface $request)
+    {
         $this->filter = $filter;
-        parent::__construct(
-            $headerFactory,
-            $headerStorage,
-            $method,
-            $uri,
-            $stream,
-            $cookieStorage,
-            $fileStorage,
-            $cookieFactory,
-            $serverParams,
-            $queryParams,
-            $attributes,
-            $parsedBody,
-            $protocol
-        );
+        parent::__construct($request);
     }
 
     /**
@@ -156,11 +115,11 @@ class PhalconRequest extends ServerRequest implements RequestInterface
      */
     public function getContentType(): string
     {
-        if (false === $this->hasHeader(self::HEADER_CONTENT_TYPE)) {
+        if (false === $this->hasHeader(ServerRequest::HEADER_CONTENT_TYPE)) {
             return '';
         }
 
-        return $this->getHeaderLine(self::HEADER_CONTENT_TYPE);
+        return $this->getHeaderLine(ServerRequest::HEADER_CONTENT_TYPE);
     }
 
     /**
@@ -240,7 +199,7 @@ class PhalconRequest extends ServerRequest implements RequestInterface
      */
     public function getRawBody()
     {
-        return $this->getContents();
+        return $this->getBody()->getContents();
     }
 
     /**
@@ -248,7 +207,7 @@ class PhalconRequest extends ServerRequest implements RequestInterface
      */
     public function getJsonRawBody($mode)
     {
-        return json_decode($this->getContents(), $mode);
+        return $this->getBody()->getContents();
     }
 
     /**

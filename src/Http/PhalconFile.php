@@ -13,14 +13,14 @@ declare(strict_types=1);
 namespace Vainyl\Phalcon\Http;
 
 use Phalcon\Http\Request\FileInterface;
-use Vainyl\Http\UploadedFile;
+use Vainyl\Http\Decorator\AbstractFileDecorator;
 
 /**
  * Class PhalconFile
  *
  * @author Taras P. Girnyk <taras.p.gyrnik@gmail.com>
  */
-class PhalconFile extends UploadedFile implements FileInterface
+class PhalconFile extends AbstractFileDecorator implements FileInterface
 {
     /**
      * @inheritDoc

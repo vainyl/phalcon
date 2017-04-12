@@ -12,6 +12,7 @@
 namespace Vainyl\Phalcon\Http;
 
 use Phalcon\Http\ResponseInterface;
+use Vainyl\Http\Decorator\AbstractResponseDecorator;
 use Vainyl\Http\Response;
 use Vainyl\Phalcon\Exception\BadRedirectCodeException;
 use Vainyl\Phalcon\Exception\UnsupportedResponseCallException;
@@ -21,7 +22,7 @@ use Vainyl\Phalcon\Exception\UnsupportedResponseCallException;
  *
  * @author Taras P. Girnyk <taras.p.gyrnik@gmail.com>
  */
-class PhalconResponse extends Response implements ResponseInterface
+class PhalconResponse extends AbstractResponseDecorator implements ResponseInterface
 {
     /**
      * @inheritDoc
@@ -54,7 +55,7 @@ class PhalconResponse extends Response implements ResponseInterface
      */
     public function setContentLength($contentLength)
     {
-        return $this->withHeader(self::HEADER_CONTENT_LENGTH, $contentLength);
+        return $this->withHeader(Response::HEADER_CONTENT_LENGTH, $contentLength);
     }
 
     /**
@@ -65,7 +66,7 @@ class PhalconResponse extends Response implements ResponseInterface
         $cloned = clone $datetime;
         $cloned->setTimezone(new \DateTimeZone("UTC"));
 
-        return $this->withHeader(self::HEADER_EXPIRES, $datetime->format("D, d M Y H:i:s") . " GMT");
+        return $this->withHeader(Response::HEADER_EXPIRES, $datetime->format("D, d M Y H:i:s") . " GMT");
     }
 
     /**
@@ -82,9 +83,9 @@ class PhalconResponse extends Response implements ResponseInterface
     public function setContentType($contentType, $charset = null)
     {
         if (null === $charset) {
-            $this->withHeader(self::HEADER_CONTENT_TYPE, $contentType);
+            $this->withHeader(Response::HEADER_CONTENT_TYPE, $contentType);
         } else {
-            $this->withHeader(self::HEADER_CONTENT_TYPE, sprintf('%s";charset=%s"', $contentType, $charset));
+            $this->withHeader(Response::HEADER_CONTENT_TYPE, sprintf('%s";charset=%s"', $contentType, $charset));
         }
 
         return $this;
@@ -101,7 +102,7 @@ class PhalconResponse extends Response implements ResponseInterface
 
         return $this
             ->withStatus($statusCode)
-            ->withHeader(self::HEADER_LOCATION, $location);
+            ->withHeader(Response::HEADER_LOCATION, $location);
     }
 
     /**
@@ -170,7 +171,7 @@ class PhalconResponse extends Response implements ResponseInterface
     public function resetHeaders()
     {
         $copy = clone $this;
-        foreach ($this->getHeaderStorage() as $name => $header) {
+        foreach ($this->getHeaders() as $name => $header) {
             $copy = $copy->withoutHeader($name);
         }
 
@@ -191,10 +192,10 @@ class PhalconResponse extends Response implements ResponseInterface
         }
 
         return $response
-            ->withHeader(self::HEADER_CONTENT_DESCRIPTION, 'File Transfer')
-            ->withHeader(self::HEADER_CONTENT_TYPE, 'application/octet-stream')
-            ->withHeader(self::HEADER_CONTENT_DISPOSITION, sprintf('attachment; filename=%s', $basePath))
-            ->withHeader(self::HEADER_CONTENT_TRANSFER_ENCODING, 'binary')
+            ->withHeader(Response::HEADER_CONTENT_DESCRIPTION, 'File Transfer')
+            ->withHeader(Response::HEADER_CONTENT_TYPE, 'application/octet-stream')
+            ->withHeader(Response::HEADER_CONTENT_DISPOSITION, sprintf('attachment; filename=%s', $basePath))
+            ->withHeader(Response::HEADER_CONTENT_TRANSFER_ENCODING, 'binary')
             ->getBody()
             ->write(readfile($filePath));
     }
