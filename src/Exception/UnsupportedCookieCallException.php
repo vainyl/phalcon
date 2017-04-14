@@ -22,6 +22,8 @@ use Vainyl\Http\Exception\AbstractCookieException;
  */
 class UnsupportedCookieCallException extends AbstractCookieException
 {
+    private $method;
+
     /**
      * UnsupportedCookieCallException constructor.
      *
@@ -30,6 +32,15 @@ class UnsupportedCookieCallException extends AbstractCookieException
      */
     public function __construct(CookieInterface $cookie, $method)
     {
+        $this->method = $method;
         parent::__construct($cookie, sprintf('Call to method %s on cookie object is not supported', $method));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function toArray(): array
+    {
+        return array_merge(['method' => $this->method], parent::toArray());
     }
 }

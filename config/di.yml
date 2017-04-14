@@ -1,0 +1,50 @@
+services:
+  router:
+    class: Phalcon\Mvc\Router
+  bootstrapper.di:
+    class: Vainyl\Phalcon\Application\DiBootstrapper
+    arguments: ['@service.container']
+    tags:
+        - {name: bootstrapper}
+  bootstrapper.router:
+    class: Vainyl\Phalcon\Application\RouterBootstrapper
+    arguments: ['@router']
+    tags:
+        - {name: bootstrapper}
+  event.dispatcher.phalcon:
+    decorates: event.dispatcher
+    class: Vainyl\Phalcon\Event\PhalconEventDispatcher
+    arguments: ['@event.dispatcher.phalcon.inner']
+  database.factory.phalcon:
+    class: Vainyl\Pdo\Factory\PdoDatabaseFactory
+    arguments: ['@connection.storage']
+  request.stack.phalcon:
+    decorates: request.stack
+    class: Vainyl\Phalcon\Http\Proxy\PhalconRequestStack
+    arguments: ['@request.stack.phalcon.inner']
+  response.stack.phalcon:
+    decorates: response.stack
+    class: Vainyl\Phalcon\Http\Proxy\PhalconResponseStack
+    arguments: ['@request.stack.phalcon.inner']
+  cookie.factory.phalcon:
+    decorates: cookie.factory
+    class: Vainyl\Phalcon\Http\Factory\PhalconCookieFactory
+    arguments: ['@cookie.factory.inner']
+  file.factory.phalcon:
+    decorates: file.factory
+    class: Vainyl\Phalcon\Http\Factory\PhalconFileFactory
+    arguments: ['@file.factory.inner']
+  request.factory.phalcon:
+    decorates: request.factory
+    class: Vainyl\Phalcon\Http\Factory\PhalconRequestFactory
+    arguments: ['@request.factory.inner']
+  response.factory.phalcon:
+    decorates: response.factory
+    class: Vainyl\Phalcon\Http\Factory\PhalconResponseFactory
+    arguments: ['@response.factory.inner']
+  model.manager:
+    class: Vainyl\Phalcon\Mvc\PhalconModelManager
+  dispatcher.mvc.phalcon:
+    class: Vainyl\Phalcon\Mvc\PhalconMvcDispatcher
+  query.builder:
+    class: Vainyl\Phalcon\Mvc\PhalconMvcQueryBuilder
