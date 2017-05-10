@@ -8,7 +8,7 @@
  * @license   https://opensource.org/licenses/MIT MIT License
  * @link      https://github.com/allflame/vain-http
  */
-namespace Vainyl\Phalcon\Di;
+namespace Vainyl\Phalcon\Container;
 
 use Phalcon\Di\InjectionAwareInterface as PhalconDiAwareInterface;
 use Psr\Container\ContainerInterface;
@@ -17,16 +17,16 @@ use \Phalcon\Di\ServiceInterface as PhalconServiceInterface;
 use \Phalcon\DiInterface as PhalconDiInterface;
 
 /**
- * Class SymfonyContainerAdapter
+ * Class PhalconContainerAdapter
  *
  * @author Taras P. Girnyk <taras.p.gyrnik@gmail.com>
  */
-class ContainerAdapter implements PhalconDiInterface, ContainerInterface
+class PhalconContainerAdapter implements PhalconDiInterface, ContainerInterface
 {
     private $container;
 
     /**
-     * SymfonyContainerAdapter constructor.
+     * PhalconContainerAdapter constructor.
      *
      * @param ContainerInterface $container
      */
