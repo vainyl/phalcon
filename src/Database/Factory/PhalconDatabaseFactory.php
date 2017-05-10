@@ -47,10 +47,10 @@ class PhalconDatabaseFactory
         $type = $configData['type'];
         switch ($type) {
             case 'pgsql':
-                return new PhalconPostgresqlAdapter($this->connectionStorage->offsetGet($configData['connection']));
+                return new PhalconPostgresqlAdapter($name, $this->connectionStorage->offsetGet($configData['connection']));
                 break;
             case 'mysql':
-                return new PhalconMysqlAdapter($this->connectionStorage->offsetGet($configData['connection']));
+                return new PhalconMysqlAdapter($name, $this->connectionStorage->offsetGet($configData['connection']));
                 break;
             default:
                 throw new UnknownPhalconTypeException($this, $type);

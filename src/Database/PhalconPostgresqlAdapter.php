@@ -25,17 +25,37 @@ use Vainyl\Phalcon\Exception\PhalconQueryException;
  */
 class PhalconPostgresqlAdapter extends PhalconPostgresqlDatabase implements MvccDatabaseInterface
 {
+    private $name;
+
     private $connection;
 
     /**
      * PhalconPostgresqlAdapter constructor.
      *
+     * @param string $name
      * @param ConnectionInterface $connection
      */
-    public function __construct(ConnectionInterface $connection)
+    public function __construct(string $name, ConnectionInterface $connection)
     {
+        $this->name = $name;
         $this->connection = $connection;
         parent::__construct([]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getId(): string
+    {
+        return spl_object_hash($this);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getName(): string
+    {
+        return $this->name;
     }
 
     /**
