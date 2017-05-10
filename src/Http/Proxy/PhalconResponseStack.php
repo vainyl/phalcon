@@ -11,26 +11,53 @@
 
 namespace Vainyl\Phalcon\Http\Proxy;
 
-use Phalcon\Http\ResponseInterface;
-use Vainyl\Http\Proxy\ResponseStack;
-use Vainyl\Phalcon\Http\PhalconResponse;
+use Phalcon\Http\ResponseInterface as PhalconResponseInterface;
+use Psr\Http\Message\ResponseInterface;
+use Vainyl\Http\Decorator\AbstractResponseDecorator;
+use Vainyl\Http\Proxy\ResponseProxyInterface;
 
 /**
  * Class PhalconResponseStack
  *
  * @author Taras P. Girnyk <taras.p.gyrnik@gmail.com>
  *
- * @method PhalconResponse getCurrentResponse
+ * @method PhalconResponseStack getMessage
  */
-class PhalconResponseStack extends ResponseStack implements ResponseInterface
+class PhalconResponseStack extends AbstractResponseDecorator implements PhalconResponseInterface, ResponseProxyInterface
 {
+    /**
+     * @inheritDoc
+     */
+    public function addResponse(ResponseInterface $vainResponse): ResponseProxyInterface
+    {
+        $this->getMessage()->addResponse($vainResponse);
+
+        return $this;
+    }
+
+    /**
+     * @return PhalconResponseInterface
+     */
+    public function popResponse(): ResponseInterface
+    {
+        return $this->getMessage()->popResponse();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCurrentResponse(): ResponseInterface
+    {
+        return $this;
+    }
+
     /**
      * @inheritDoc
      */
     public function setStatusCode($code, $message = null)
     {
-        $response = $this->popResponse()->setStatusCode($code, $message);
-        $this->addResponse($response);
+        $response = $this->getMessage()->popResponse()->setStatusCode($code, $message);
+        $this->getMessage()->addResponse($response);
 
         return $this;
     }
@@ -40,8 +67,8 @@ class PhalconResponseStack extends ResponseStack implements ResponseInterface
      */
     public function setHeader($name, $value)
     {
-        $response = $this->popResponse()->setHeader($name, $value);
-        $this->addResponse($response);
+        $response = $this->getMessage()->popResponse()->setHeader($name, $value);
+        $this->getMessage()->addResponse($response);
 
         return $this;
     }
@@ -51,8 +78,8 @@ class PhalconResponseStack extends ResponseStack implements ResponseInterface
      */
     public function setRawHeader($header)
     {
-        $response = $this->popResponse()->setRawHeader($header);
-        $this->addResponse($response);
+        $response = $this->getMessage()->popResponse()->setRawHeader($header);
+        $this->getMessage()->addResponse($response);
 
         return $this;
     }
@@ -62,8 +89,8 @@ class PhalconResponseStack extends ResponseStack implements ResponseInterface
      */
     public function resetHeaders()
     {
-        $response = $this->popResponse()->resetHeaders();
-        $this->addResponse($response);
+        $response = $this->getMessage()->popResponse()->resetHeaders();
+        $this->getMessage()->addResponse($response);
 
         return $this;
     }
@@ -73,8 +100,8 @@ class PhalconResponseStack extends ResponseStack implements ResponseInterface
      */
     public function setExpires(\DateTime $datetime)
     {
-        $response = $this->popResponse()->setExpires($datetime);
-        $this->addResponse($response);
+        $response = $this->getMessage()->popResponse()->setExpires($datetime);
+        $this->getMessage()->addResponse($response);
 
         return $this;
     }
@@ -84,8 +111,8 @@ class PhalconResponseStack extends ResponseStack implements ResponseInterface
      */
     public function setContentLength($contentLength)
     {
-        $response = $this->popResponse()->setContentLength($contentLength);
-        $this->addResponse($response);
+        $response = $this->getMessage()->popResponse()->setContentLength($contentLength);
+        $this->getMessage()->addResponse($response);
 
         return $this;
     }
@@ -95,8 +122,8 @@ class PhalconResponseStack extends ResponseStack implements ResponseInterface
      */
     public function setNotModified()
     {
-        $response = $this->popResponse()->setNotModified();
-        $this->addResponse($response);
+        $response = $this->getMessage()->popResponse()->setNotModified();
+        $this->getMessage()->addResponse($response);
 
         return $this;
     }
@@ -106,8 +133,8 @@ class PhalconResponseStack extends ResponseStack implements ResponseInterface
      */
     public function setContentType($contentType, $charset = null)
     {
-        $response = $this->popResponse()->setContentType($contentType);
-        $this->addResponse($response);
+        $response = $this->getMessage()->popResponse()->setContentType($contentType);
+        $this->getMessage()->addResponse($response);
 
         return $this;
     }
@@ -117,8 +144,8 @@ class PhalconResponseStack extends ResponseStack implements ResponseInterface
      */
     public function redirect($location = null, $externalRedirect = false, $statusCode = 302)
     {
-        $response = $this->popResponse()->redirect($location, $externalRedirect, $statusCode);
-        $this->addResponse($response);
+        $response = $this->getMessage()->popResponse()->redirect($location, $externalRedirect, $statusCode);
+        $this->getMessage()->addResponse($response);
 
         return $this;
     }
@@ -128,8 +155,8 @@ class PhalconResponseStack extends ResponseStack implements ResponseInterface
      */
     public function setContent($content)
     {
-        $response = $this->popResponse()->setContent($content);
-        $this->addResponse($response);
+        $response = $this->getMessage()->popResponse()->setContent($content);
+        $this->getMessage()->addResponse($response);
 
         return $this;
     }
@@ -139,8 +166,8 @@ class PhalconResponseStack extends ResponseStack implements ResponseInterface
      */
     public function setJsonContent($content)
     {
-        $response = $this->popResponse()->setJsonContent($content);
-        $this->addResponse($response);
+        $response = $this->getMessage()->popResponse()->setJsonContent($content);
+        $this->getMessage()->addResponse($response);
 
         return $this;
     }
@@ -150,8 +177,8 @@ class PhalconResponseStack extends ResponseStack implements ResponseInterface
      */
     public function appendContent($content)
     {
-        $response = $this->popResponse()->appendContent($content);
-        $this->addResponse($response);
+        $response = $this->getMessage()->popResponse()->appendContent($content);
+        $this->getMessage()->addResponse($response);
 
         return $this;
     }
@@ -161,7 +188,7 @@ class PhalconResponseStack extends ResponseStack implements ResponseInterface
      */
     public function getContent()
     {
-        return $this->getCurrentResponse()->getContent();
+        return $this->getMessage()->getContent();
     }
 
     /**
@@ -169,7 +196,7 @@ class PhalconResponseStack extends ResponseStack implements ResponseInterface
      */
     public function sendHeaders()
     {
-        return $this->getCurrentResponse()->sendHeaders();
+        return $this->getMessage()->sendHeaders();
     }
 
     /**
@@ -177,7 +204,7 @@ class PhalconResponseStack extends ResponseStack implements ResponseInterface
      */
     public function sendCookies()
     {
-        return $this->getCurrentResponse()->sendCookies();
+        return $this->getMessage()->sendCookies();
     }
 
     /**
@@ -185,7 +212,7 @@ class PhalconResponseStack extends ResponseStack implements ResponseInterface
      */
     public function send()
     {
-        return $this->getCurrentResponse()->send();
+        return $this->getMessage()->send();
     }
 
     /**
@@ -193,8 +220,8 @@ class PhalconResponseStack extends ResponseStack implements ResponseInterface
      */
     public function setFileToSend($filePath, $attachmentName = null)
     {
-        $response = $this->popResponse()->setFileToSend($filePath, $attachmentName);
-        $this->addResponse($response);
+        $response = $this->getMessage()->popResponse()->setFileToSend($filePath, $attachmentName);
+        $this->getMessage()->addResponse($response);
 
         return $this;
     }
