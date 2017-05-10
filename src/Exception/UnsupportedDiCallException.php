@@ -12,23 +12,24 @@ declare(strict_types = 1);
 
 namespace Vainyl\Phalcon\Exception;
 
-use \Phalcon\DiInterface as PhalconDiInterface;
+use Psr\Container\ContainerInterface;
+use Vainyl\Core\Exception\AbstractContainerException;
 
 /**
  * Class UnsupportedDiCallException
  *
  * @author Taras P. Girnyk <taras.p.gyrnik@gmail.com>
  */
-class UnsupportedDiCallException extends DiException
+class UnsupportedDiCallException extends AbstractContainerException
 {
     /**
      * UnsupportedDiCallException constructor.
      *
-     * @param PhalconDiInterface $di
+     * @param ContainerInterface $container
      * @param string             $method
      */
-    public function __construct(PhalconDiInterface $di, $method)
+    public function __construct(ContainerInterface $container, $method)
     {
-        parent::__construct($di, sprintf('Call to method %s on di object is not supported', $method));
+        parent::__construct($container, sprintf('Call to method %s on container is not supported', $method));
     }
 }

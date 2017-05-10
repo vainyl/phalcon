@@ -8,12 +8,10 @@
  * @license   https://opensource.org/licenses/MIT MIT License
  * @link      https://github.com/allflame/vain-http
  */
-namespace Vainyl\Phalcon\Di\Symfony;
+namespace Vainyl\Phalcon\Di;
 
 use Phalcon\Di\InjectionAwareInterface as PhalconDiAwareInterface;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\DependencyInjection\Container as SymfonyContainer;
-use Symfony\Component\DependencyInjection\ContainerInterface as SymfonyContainerInterface;
 use Vainyl\Phalcon\Exception\UnsupportedDiCallException;
 use \Phalcon\Di\ServiceInterface as PhalconServiceInterface;
 use \Phalcon\DiInterface as PhalconDiInterface;
@@ -23,34 +21,18 @@ use \Phalcon\DiInterface as PhalconDiInterface;
  *
  * @author Taras P. Girnyk <taras.p.gyrnik@gmail.com>
  */
-class SymfonyContainerAdapter implements PhalconDiInterface, SymfonyContainerInterface, ContainerInterface
+class ContainerAdapter implements PhalconDiInterface, ContainerInterface
 {
-    private $symfonyContainer;
+    private $container;
 
     /**
      * SymfonyContainerAdapter constructor.
      *
-     * @param SymfonyContainer $symfonyContainer
+     * @param ContainerInterface $container
      */
-    public function __construct(SymfonyContainer $symfonyContainer)
+    public function __construct(ContainerInterface $container)
     {
-        $this->symfonyContainer = $symfonyContainer;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function isFrozen()
-    {
-        return $this->symfonyContainer->isFrozen();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function compile()
-    {
-        return $this->symfonyContainer->compile();
+        $this->container = $container;
     }
 
     /**
@@ -58,9 +40,7 @@ class SymfonyContainerAdapter implements PhalconDiInterface, SymfonyContainerInt
      */
     public function set($name, $definition, $shared = false)
     {
-        $this->symfonyContainer->set($name, $definition);
-
-        return $this;
+        throw new UnsupportedDiCallException($this, __METHOD__);
     }
 
     /**
@@ -68,7 +48,7 @@ class SymfonyContainerAdapter implements PhalconDiInterface, SymfonyContainerInt
      */
     public function setShared($name, $definition)
     {
-        return $this->set($name, $definition);
+        throw new UnsupportedDiCallException($this, __METHOD__);
     }
 
     /**
@@ -92,11 +72,7 @@ class SymfonyContainerAdapter implements PhalconDiInterface, SymfonyContainerInt
      */
     public function get($name, $parameters = null)
     {
-        if ($this->hasParameter($name)) {
-            return $this->getParameter($name);
-        }
-
-        $result = $this->symfonyContainer->get($name);
+        $result = $this->container->get($name);
 
         if ($result instanceof PhalconDiAwareInterface) {
             $result->setDI($this);
@@ -142,7 +118,7 @@ class SymfonyContainerAdapter implements PhalconDiInterface, SymfonyContainerInt
      */
     public function has($name)
     {
-        return $this->symfonyContainer->has($name);
+        return $this->container->has($name);
     }
 
     /**
@@ -213,39 +189,5 @@ class SymfonyContainerAdapter implements PhalconDiInterface, SymfonyContainerInt
     public function offsetUnset($offset)
     {
         return $this->remove($offset);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function initialized($id)
-    {
-        return $this->symfonyContainer->initialized($id);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getParameter($name)
-    {
-        return $this->symfonyContainer->getParameter($name);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function hasParameter($name)
-    {
-        return $this->symfonyContainer->hasParameter($name);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setParameter($name, $value)
-    {
-        $this->symfonyContainer->setParameter($name, $value);
-
-        return $this;
     }
 }
