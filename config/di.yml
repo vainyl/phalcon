@@ -3,7 +3,7 @@ services:
     class: Phalcon\Mvc\Router
   bootstrapper.di:
     class: Vainyl\Phalcon\Application\DiBootstrapper
-    arguments: ['@service.container']
+    arguments: ['@service_container']
     tags:
         - {name: bootstrapper}
   bootstrapper.router:
