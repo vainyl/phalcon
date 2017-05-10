@@ -13,11 +13,14 @@ namespace Vainyl\Phalcon\Http\Proxy;
 
 use Phalcon\Http\ResponseInterface;
 use Vainyl\Http\Proxy\ResponseStack;
+use Vainyl\Phalcon\Http\PhalconResponse;
 
 /**
  * Class PhalconResponseStack
  *
  * @author Taras P. Girnyk <taras.p.gyrnik@gmail.com>
+ *
+ * @method PhalconResponse getCurrentResponse
  */
 class PhalconResponseStack extends ResponseStack implements ResponseInterface
 {
@@ -158,7 +161,7 @@ class PhalconResponseStack extends ResponseStack implements ResponseInterface
      */
     public function getContent()
     {
-        return $this->getCurrentMessage()->getContent();
+        return $this->getCurrentResponse()->getContent();
     }
 
     /**
@@ -166,7 +169,7 @@ class PhalconResponseStack extends ResponseStack implements ResponseInterface
      */
     public function sendHeaders()
     {
-        return $this->getCurrentMessage()->sendHeaders();
+        return $this->getCurrentResponse()->sendHeaders();
     }
 
     /**
@@ -174,7 +177,7 @@ class PhalconResponseStack extends ResponseStack implements ResponseInterface
      */
     public function sendCookies()
     {
-        return $this->getCurrentMessage()->sendCookies();
+        return $this->getCurrentResponse()->sendCookies();
     }
 
     /**
@@ -182,7 +185,7 @@ class PhalconResponseStack extends ResponseStack implements ResponseInterface
      */
     public function send()
     {
-        return $this->getCurrentMessage()->send();
+        return $this->getCurrentResponse()->send();
     }
 
     /**
