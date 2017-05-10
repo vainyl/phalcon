@@ -29,19 +29,19 @@ services:
   cookie.factory.phalcon:
     decorates: cookie.factory
     class: Vainyl\Phalcon\Http\Factory\PhalconCookieFactory
-    arguments: ['@cookie.factory.inner']
+    arguments: ['@cookie.factory.phalcon.inner']
   file.factory.phalcon:
     decorates: file.factory
     class: Vainyl\Phalcon\Http\Factory\PhalconFileFactory
-    arguments: ['@file.factory.inner']
+    arguments: ['@file.factory.phalcon.inner']
   request.factory.phalcon:
     decorates: request.factory
     class: Vainyl\Phalcon\Http\Factory\PhalconRequestFactory
-    arguments: ['@request.factory.inner']
+    arguments: ['@request.factory.phalcon.inner']
   response.factory.phalcon:
     decorates: response.factory
     class: Vainyl\Phalcon\Http\Factory\PhalconResponseFactory
-    arguments: ['@response.factory.inner']
+    arguments: ['@response.factory.phalcon.inner']
   model.manager:
     class: Vainyl\Phalcon\Mvc\PhalconModelManager
   dispatcher.mvc.phalcon:
