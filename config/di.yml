@@ -1,4 +1,10 @@
 services:
+  app.mvc.phalcon:
+    class: Phalcon\Mvc\Application
+  app.http.phalcon:
+    class: Vainyl\Phalcon\Application\PhalconApplication
+    arguments: ['@app.mvc.phalcon', '@response.stack.phalcon']
+  app.http: '@app.http.phalcon'
   router.phalcon:
     class: Phalcon\Mvc\Router
   filter.phalcon:
@@ -22,11 +28,11 @@ services:
     arguments: ['@connection.storage']
   request.stack.phalcon:
     decorates: request.stack
-    class: Vainyl\Phalcon\Http\Proxy\PhalconRequestStack
+    class: Vainyl\Phalcon\Http\Stack\PhalconRequestStack
     arguments: ['@request.stack.phalcon.inner']
   response.stack.phalcon:
     decorates: response.stack
-    class: Vainyl\Phalcon\Http\Proxy\PhalconResponseStack
+    class: Vainyl\Phalcon\Http\Stack\PhalconResponseStack
     arguments: ['@request.stack.phalcon.inner']
   cookie.factory.phalcon:
     decorates: cookie.factory

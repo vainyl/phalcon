@@ -9,12 +9,12 @@
  * @link      https://github.com/allflame/vain-http
  */
 
-namespace Vainyl\Phalcon\Http\Proxy;
+namespace Vainyl\Phalcon\Http\Stack;
 
 use Phalcon\Http\ResponseInterface as PhalconResponseInterface;
 use Psr\Http\Message\ResponseInterface;
 use Vainyl\Http\Decorator\AbstractResponseDecorator;
-use Vainyl\Http\Proxy\ResponseProxyInterface;
+use Vainyl\Http\Stack\ResponseStackInterface;
 
 /**
  * Class PhalconResponseStack
@@ -23,12 +23,12 @@ use Vainyl\Http\Proxy\ResponseProxyInterface;
  *
  * @method PhalconResponseStack getMessage
  */
-class PhalconResponseStack extends AbstractResponseDecorator implements PhalconResponseInterface, ResponseProxyInterface
+class PhalconResponseStack extends AbstractResponseDecorator implements PhalconResponseInterface, ResponseStackInterface
 {
     /**
      * @inheritDoc
      */
-    public function addResponse(ResponseInterface $vainResponse): ResponseProxyInterface
+    public function addResponse(ResponseInterface $vainResponse): ResponseStackInterface
     {
         $this->getMessage()->addResponse($vainResponse);
 
