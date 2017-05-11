@@ -4,6 +4,7 @@ services:
     arguments: ['@app.di']
   app.http.phalcon:
     decorates: app.http
+    decoration_priority: 1000
     class: Vainyl\Phalcon\Application\Decorator\PhalconApplicationDecorator
     arguments: ['@app.http.phalcon.inner', '@app.mvc.phalcon', '@response.stack.phalcon']
   router.phalcon:
