@@ -8,6 +8,14 @@ services:
     arguments: ['@app.http.phalcon.inner', '@app.mvc.phalcon', '@response.stack.phalcon']
   router.phalcon:
     class: Phalcon\Mvc\Router
+  router: '@router.phalcon'
+  view.phalcon:
+    class: Phalcon\Mvc\View
+  view: '@view.phalcon'
+  dispatcher.phalcon:
+    class: Phalcon\Mvc\Dispatcher
+  dispatcher: '@dispatcher.phalcon'
+  response: '@response.stack'
   filter.phalcon:
     class: Phalcon\Filter
   bootstrapper.di:
