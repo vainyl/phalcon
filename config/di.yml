@@ -1,6 +1,7 @@
 services:
   app.mvc.phalcon:
     class: Phalcon\Mvc\Application
+    arguments: ['@app.di']
   app.http.phalcon:
     decorates: app.http
     class: Vainyl\Phalcon\Application\Decorator\PhalconApplicationDecorator
@@ -11,7 +12,7 @@ services:
     class: Phalcon\Filter
   bootstrapper.di:
     class: Vainyl\Phalcon\Application\DiBootstrapper
-    arguments: ['@service_container']
+    arguments: ['@app.di']
     tags:
         - {name: bootstrapper}
   bootstrapper.router:
