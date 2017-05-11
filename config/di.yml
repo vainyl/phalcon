@@ -33,7 +33,7 @@ services:
   response.stack.phalcon:
     decorates: response.stack
     class: Vainyl\Phalcon\Http\Stack\PhalconResponseStack
-    arguments: ['@request.stack.phalcon.inner']
+    arguments: ['@response.stack.phalcon.inner']
   cookie.factory.phalcon:
     decorates: cookie.factory
     class: Vainyl\Phalcon\Http\Factory\PhalconCookieFactory
