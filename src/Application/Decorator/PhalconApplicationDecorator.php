@@ -9,20 +9,20 @@
  * @link      https://github.com/allflame/vain-operation
  */
 
-namespace Vainyl\Phalcon\Application;
+namespace Vainyl\Phalcon\Application\Decorator;
 
-use Phalcon\Mvc\Application;
+use Phalcon\Mvc\Application as PhalconMvcApplication;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Vainyl\Core\Application\AbstractApplication;
+use Vainyl\Http\Application\Decorator\AbstractHttpApplicationDecorator;
 use Vainyl\Http\Application\HttpApplicationInterface;
 
 /**
- * Class PhalconApplication
+ * Class PhalconApplicationDecorator
  *
  * @author Taras P. Girnyk <taras.p.gyrnik@gmail.com>
  */
-class PhalconApplication extends AbstractApplication implements HttpApplicationInterface
+class PhalconApplicationDecorator extends AbstractHttpApplicationDecorator
 {
     private $application;
 
@@ -31,13 +31,18 @@ class PhalconApplication extends AbstractApplication implements HttpApplicationI
     /**
      * PhalconApplication constructor.
      *
-     * @param Application       $application
-     * @param ResponseInterface $response
+     * @param HttpApplicationInterface $httpApplication
+     * @param PhalconMvcApplication    $application
+     * @param ResponseInterface        $response
      */
-    public function __construct(Application $application, ResponseInterface $response)
-    {
+    public function __construct(
+        HttpApplicationInterface $httpApplication,
+        PhalconMvcApplication $application,
+        ResponseInterface $response
+    ) {
         $this->application = $application;
         $this->response = $response;
+        parent::__construct($httpApplication);
     }
 
     /**

@@ -2,9 +2,9 @@ services:
   app.mvc.phalcon:
     class: Phalcon\Mvc\Application
   app.http.phalcon:
-    class: Vainyl\Phalcon\Application\PhalconApplication
-    arguments: ['@app.mvc.phalcon', '@response.stack.phalcon']
-  app.http: '@app.http.phalcon'
+    decorates: app.http
+    class: Vainyl\Phalcon\Application\Decorator\PhalconApplicationDecorator
+    arguments: ['@app.http.phalcon.inner', '@app.mvc.phalcon', '@response.stack.phalcon']
   router.phalcon:
     class: Phalcon\Mvc\Router
   filter.phalcon:
