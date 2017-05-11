@@ -1,6 +1,8 @@
 services:
-  router:
+  router.phalcon:
     class: Phalcon\Mvc\Router
+  filter.phalcon:
+    class: Phalcon\Filter
   bootstrapper.di:
     class: Vainyl\Phalcon\Application\DiBootstrapper
     arguments: ['@service_container']
@@ -8,7 +10,7 @@ services:
         - {name: bootstrapper}
   bootstrapper.router:
     class: Vainyl\Phalcon\Application\RouterBootstrapper
-    arguments: ['@router']
+    arguments: ['@router.phalcon']
     tags:
         - {name: bootstrapper}
   event.dispatcher.phalcon:
@@ -37,7 +39,7 @@ services:
   request.factory.phalcon:
     decorates: request.factory
     class: Vainyl\Phalcon\Http\Factory\PhalconRequestFactory
-    arguments: ['@request.factory.phalcon.inner']
+    arguments: ['@request.factory.phalcon.inner', '@filter.phalcon']
   response.factory.phalcon:
     decorates: response.factory
     class: Vainyl\Phalcon\Http\Factory\PhalconResponseFactory
