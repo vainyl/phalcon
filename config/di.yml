@@ -29,7 +29,7 @@ services:
   cookie.factory.phalcon:
     decorates: cookie.factory
     class: Vainyl\Phalcon\Http\Factory\PhalconCookieFactory
-    arguments: ['@cookie.factory.phalcon.inner']
+    arguments: ['@cookie.factory.phalcon.inner', '@time.factory']
   file.factory.phalcon:
     decorates: file.factory
     class: Vainyl\Phalcon\Http\Factory\PhalconFileFactory
