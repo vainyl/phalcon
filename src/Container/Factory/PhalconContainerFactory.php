@@ -42,6 +42,9 @@ class PhalconContainerFactory extends AbstractIdentifiable implements ContainerF
      */
     public function createContainer(EnvironmentInterface $environment): ContainerInterface
     {
-        return new PhalconContainerAdapter($this->containerFactory->createContainer($environment));
+        $container = new PhalconContainerAdapter($this->containerFactory->createContainer($environment));
+        $container->set('app.di', $container);
+
+        return $container;
     }
 }

@@ -40,7 +40,7 @@ class PhalconContainerAdapter implements PhalconDiInterface, ContainerInterface
      */
     public function set($name, $definition, $shared = false)
     {
-        throw new UnsupportedDiCallException($this, __METHOD__);
+        $this->container->set($name, $definition);
     }
 
     /**
