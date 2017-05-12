@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Vainyl\Phalcon\Http\Factory;
 
 use Psr\Http\Message\UploadedFileInterface;
-use Vainyl\Http\Decorator\AbstractFileFactoryDecorator;
+use Vainyl\Http\Factory\Decorator\AbstractFileFactoryDecorator;
 use Vainyl\Phalcon\Http\PhalconFile;
 
 /**

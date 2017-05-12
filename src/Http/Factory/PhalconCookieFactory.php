@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Vainyl\Phalcon\Http\Factory;
 
 use Vainyl\Http\CookieInterface;
-use Vainyl\Http\Decorator\AbstractCookieFactoryDecorator;
 use Vainyl\Http\Factory\CookieFactoryInterface;
+use Vainyl\Http\Factory\Decorator\AbstractCookieFactoryDecorator;
 use Vainyl\Phalcon\Http\PhalconCookie;
 use Vainyl\Time\Factory\TimeFactoryInterface;
 use Vainyl\Time\TimeInterface;

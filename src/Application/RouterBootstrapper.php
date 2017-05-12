@@ -50,6 +50,12 @@ class RouterBootstrapper extends AbstractIdentifiable implements BootstrapperInt
     public function process(ApplicationInterface $application): BootstrapperInterface
     {
         $this->router->removeExtraSlashes(true);
+        $this->router->setDefaults(
+            [
+                'controller' => "default",
+                'action'     => "index",
+            ]
+        );
 
         return $this;
     }

@@ -12,21 +12,48 @@ declare(strict_types=1);
 
 namespace Vainyl\Phalcon\Controller;
 
-use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\Controller;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Vainyl\Core\Encoder\EncoderInterface;
+use Vainyl\Core\Encoder\Storage\EncoderStorageInterface;
+use Vainyl\Phalcon\Http\PhalconRequest;
+use Vainyl\Phalcon\Http\PhalconResponse;
 
 /**
  * Class AbstractController
  *
  * @author Taras P. Girnyk <taras.p.gyrnik@gmail.com>
  *
- * @property ServerRequestInterface request
- * @property ResponseInterface response
- * @property \ArrayAccess cookies
+ * @property PhalconRequest  request
+ * @property PhalconResponse response
+ * @property \ArrayAccess    cookies
  */
 abstract class AbstractController extends Controller implements ControllerInterface
 {
+    /**
+     * @var EncoderStorageInterface
+     */
+    private $encoderStorage;
+
+    /**
+     * @param EncoderStorageInterface $encoderStorage
+     */
+    public function initialize(EncoderStorageInterface $encoderStorage)
+    {
+        $this->encoderStorage = $encoderStorage;
+    }
+
+    /**
+     * @param string $alias
+     *
+     * @return EncoderInterface
+     */
+    public function getEncoder(string $alias): EncoderInterface
+    {
+        return $this->encoderStorage->getEncoder($alias);
+    }
+
     /**
      * @inheritDoc
      */

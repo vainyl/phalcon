@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Vainyl\Phalcon\Http\Factory;
 
 use Psr\Http\Message\ResponseInterface;
-use Vainyl\Http\Decorator\AbstractResponseFactoryDecorator;
+use Vainyl\Http\Factory\Decorator\AbstractResponseFactoryDecorator;
 use Vainyl\Phalcon\Http\PhalconResponse;
 
 /**

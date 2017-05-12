@@ -16,7 +16,7 @@ use Phalcon\FilterInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
-use Vainyl\Http\Decorator\AbstractRequestFactoryDecorator;
+use Vainyl\Http\Factory\Decorator\AbstractRequestFactoryDecorator;
 use Vainyl\Http\Factory\RequestFactoryInterface;
 use Vainyl\Phalcon\Http\PhalconRequest;
 
