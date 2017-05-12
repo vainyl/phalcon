@@ -17,7 +17,7 @@ services:
     class: Phalcon\Mvc\View
   view: '@view.phalcon'
   dispatcher.phalcon:
-    class: Vain\Phalcon\Dispatcher\Mvc\MvcDispatcher
+    class: Vainyl\Phalcon\Mvc\PhalconMvcDispatcher
     arguments: ['%dispatcher.separator%']
     calls:
       - [setEventsManager, ['@event.dispatcher.phalcon']]
