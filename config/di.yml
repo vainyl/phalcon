@@ -77,3 +77,6 @@ services:
     abstract: true
     calls:
       - [initialize, ['@encoder.storage']]
+  default.controller:
+    parent: controller.phalcon.abstract:
+    class: Vainyl\Phalcon\Controller\DefaultController
