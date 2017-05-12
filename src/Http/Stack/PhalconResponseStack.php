@@ -44,11 +44,11 @@ class PhalconResponseStack extends AbstractResponseDecorator implements PhalconR
     }
 
     /**
-     * @inheritDoc
+     * @return PhalconResponseInterface
      */
     public function getCurrentResponse(): ResponseInterface
     {
-        return $this;
+        return $this->getMessage()->getCurrentResponse();
     }
 
     /**
