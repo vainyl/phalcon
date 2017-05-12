@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Vainyl\Phalcon\Controller;
 
+use Psr\Http\Message\ResponseInterface;
+
 /**
  * Class DefaultController
  *
@@ -19,7 +21,10 @@ namespace Vainyl\Phalcon\Controller;
  */
 class DefaultController extends AbstractController
 {
-    public function indexAction()
+    /**
+     * @return ResponseInterface
+     */
+    public function indexAction() : ResponseInterface
     {
         $contentType = $this->request->hasHeader('Content-Type') ? $this->request->getContentType() : 'null';
 
@@ -27,5 +32,7 @@ class DefaultController extends AbstractController
             ->withStatus(200)
             ->getBody()
             ->write($this->getEncoder($contentType)->encode('It works!'));
+
+        return $this->response;
     }
 }
