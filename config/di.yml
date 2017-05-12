@@ -24,6 +24,7 @@ services:
       - [setParams, [[]]]
   dispatcher: '@dispatcher.phalcon'
   response: '@response.stack'
+  request: '@request.stack'
   filter.phalcon:
     class: Phalcon\Filter
   bootstrapper.di:
@@ -76,7 +77,8 @@ services:
   controller.phalcon.abstract:
     abstract: true
     calls:
+      - [setEventsManager, ['@event.dispatcher.phalcon']]
       - [initialize, ['@encoder.storage']]
   default.controller:
-    parent: controller.phalcon.abstract:
+    parent: controller.phalcon.abstract
     class: Vainyl\Phalcon\Controller\DefaultController
