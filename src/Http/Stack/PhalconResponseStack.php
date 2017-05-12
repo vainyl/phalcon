@@ -188,7 +188,7 @@ class PhalconResponseStack extends AbstractResponseDecorator implements PhalconR
      */
     public function getContent()
     {
-        return $this->getMessage()->getContent();
+        return $this->getMessage()->getCurrentResponse()->getContent();
     }
 
     /**
@@ -196,7 +196,7 @@ class PhalconResponseStack extends AbstractResponseDecorator implements PhalconR
      */
     public function sendHeaders()
     {
-        return $this->getMessage()->sendHeaders();
+        return $this->getMessage()->getCurrentResponse()->sendHeaders();
     }
 
     /**
@@ -204,7 +204,7 @@ class PhalconResponseStack extends AbstractResponseDecorator implements PhalconR
      */
     public function sendCookies()
     {
-        return $this->getMessage()->sendCookies();
+        return $this->getMessage()->getCurrentResponse()->sendCookies();
     }
 
     /**
@@ -212,7 +212,7 @@ class PhalconResponseStack extends AbstractResponseDecorator implements PhalconR
      */
     public function send()
     {
-        return $this->getMessage()->send();
+        return $this->getMessage()->getCurrentResponse()->send();
     }
 
     /**
