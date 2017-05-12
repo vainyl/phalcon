@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Vainyl\Phalcon\Controller;
 
-use Phalcon\Http\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**

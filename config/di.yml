@@ -1,3 +1,6 @@
+paramters:
+  dispatcher.separator: '.'
+
 services:
   app.mvc.phalcon:
     class: Phalcon\Mvc\Application
@@ -14,7 +17,11 @@ services:
     class: Phalcon\Mvc\View
   view: '@view.phalcon'
   dispatcher.phalcon:
-    class: Phalcon\Mvc\Dispatcher
+    class: Vain\Phalcon\Dispatcher\Mvc\MvcDispatcher
+    arguments: ['%dispatcher.separator%']
+    calls:
+      - [setEventsManager, ['@event.dispatcher.phalcon']]
+      - [setParams, [[]]]
   dispatcher: '@dispatcher.phalcon'
   response: '@response.stack'
   filter.phalcon:
@@ -66,3 +73,7 @@ services:
     class: Vainyl\Phalcon\Mvc\PhalconMvcDispatcher
   query.builder:
     class: Vainyl\Phalcon\Mvc\PhalconMvcQueryBuilder
+  controller.phalcon.abstract:
+    abstract: true
+    calls:
+      - [initialize, ['@encoder.storage']]
