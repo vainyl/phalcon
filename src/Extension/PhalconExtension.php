@@ -19,4 +19,11 @@ use Vainyl\Core\Extension\AbstractExtension;
  */
 class PhalconExtension extends AbstractExtension
 {
+    /**
+     * @inheritDoc
+     */
+    public function getCompilerPasses(): array
+    {
+        return [];
+    }
 }
