@@ -10,20 +10,13 @@
  */
 namespace Vainyl\Phalcon\Extension;
 
-use Vainyl\Core\Extension\AbstractExtension;
+use Vainyl\Core\Extension\AbstractFrameworkExtension;
 
 /**
  * Class PhalconExtension
  *
  * @author Taras P. Girnyk <taras.p.gyrnik@gmail.com>
  */
-class PhalconExtension extends AbstractExtension
+class PhalconExtension extends AbstractFrameworkExtension
 {
-    /**
-     * @inheritDoc
-     */
-    public function getCompilerPasses(): array
-    {
-        return [];
-    }
 }
