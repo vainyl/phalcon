@@ -13,7 +13,6 @@
         }
     },
     "require": {
-        "php": ">=7.0",
         "ext-phalcon": "^3.1",
         "vainyl/config": "dev-master",
         "vainyl/core": "dev-master",
