@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Vainyl\Phalcon\Application;
 
 use Phalcon\Di;
+use Phalcon\DiInterface;
 use Psr\Container\ContainerInterface;
 use Vainyl\Core\AbstractIdentifiable;
 use Vainyl\Core\Application\ApplicationInterface;
@@ -25,6 +26,9 @@ use Vainyl\Core\Application\BootstrapperInterface;
  */
 class DiBootstrapper extends AbstractIdentifiable implements BootstrapperInterface
 {
+    /**
+     * @var DiInterface
+     */
     private $container;
 
     /**
