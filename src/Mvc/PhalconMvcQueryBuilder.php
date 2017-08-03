@@ -8,6 +8,7 @@
  * @license   https://opensource.org/licenses/MIT MIT License
  * @link      https://github.com/allflame/vain-phalcon
  */
+
 namespace Vainyl\Phalcon\Mvc;
 
 use Phalcon\Mvc\Model\Query;

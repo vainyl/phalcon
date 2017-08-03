@@ -24,7 +24,7 @@ class DefaultController extends AbstractController
     /**
      * @return ResponseInterface
      */
-    public function indexAction() : ResponseInterface
+    public function indexAction(): ResponseInterface
     {
         $contentType = $this->request->hasHeader('Content-Type') ? $this->request->getContentType() : 'text/html';
 

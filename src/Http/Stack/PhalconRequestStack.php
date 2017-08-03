@@ -23,7 +23,8 @@ use Vainyl\Http\Stack\RequestStackInterface;
  *
  * @method PhalconRequestStack getMessage
  */
-class PhalconRequestStack extends AbstractServerRequestDecorator implements PhalconRequestInterface, RequestStackInterface
+class PhalconRequestStack extends AbstractServerRequestDecorator implements PhalconRequestInterface,
+                                                                            RequestStackInterface
 {
     /**
      * @inheritDoc

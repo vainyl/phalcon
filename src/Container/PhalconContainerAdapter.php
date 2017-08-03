@@ -8,6 +8,7 @@
  * @license   https://opensource.org/licenses/MIT MIT License
  * @link      https://github.com/allflame/vain-http
  */
+
 namespace Vainyl\Phalcon\Container;
 
 use Phalcon\Di\InjectionAwareInterface as PhalconDiAwareInterface;

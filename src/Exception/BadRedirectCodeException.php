@@ -22,7 +22,6 @@ use Vainyl\Http\Exception\AbstractResponseException;
  */
 class BadRedirectCodeException extends AbstractResponseException
 {
-
     private $code;
 
     /**
