@@ -8,6 +8,7 @@
  * @license   https://opensource.org/licenses/MIT MIT License
  * @link      https://github.com/allflame/vain-http
  */
+
 namespace Vainyl\Phalcon\Event;
 
 use Vainyl\Core\AbstractIdentifiable;
@@ -51,7 +52,7 @@ class PhalconEvent extends AbstractIdentifiable implements EventInterface
     /**
      * @inheritDoc
      */
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }

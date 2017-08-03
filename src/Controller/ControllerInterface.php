@@ -25,15 +25,15 @@ interface ControllerInterface
     /**
      * @return ServerRequestInterface
      */
-    public function getRequest() : ServerRequestInterface;
+    public function getRequest(): ServerRequestInterface;
 
     /**
      * @return ResponseInterface
      */
-    public function getResponse() : ResponseInterface;
+    public function getResponse(): ResponseInterface;
 
     /**
      * @return \ArrayAccess
      */
-    public function getCookies() : \ArrayAccess;
+    public function getCookies(): \ArrayAccess;
 }

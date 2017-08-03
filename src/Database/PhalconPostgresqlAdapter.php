@@ -32,7 +32,7 @@ class PhalconPostgresqlAdapter extends PhalconPostgresqlDatabase implements Mvcc
     /**
      * PhalconPostgresqlAdapter constructor.
      *
-     * @param string $name
+     * @param string              $name
      * @param ConnectionInterface $connection
      */
     public function __construct(string $name, ConnectionInterface $connection)

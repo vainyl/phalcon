@@ -32,7 +32,7 @@ class PhalconMysqlAdapter extends Mysql implements MvccDatabaseInterface
     /**
      * PhalconPostgresqlAdapter constructor.
      *
-     * @param string $name
+     * @param string              $name
      * @param ConnectionInterface $connection
      */
     public function __construct(string $name, ConnectionInterface $connection)
